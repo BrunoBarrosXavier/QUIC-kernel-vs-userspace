@@ -1,0 +1,14 @@
+#!/usr/bin/env bpftrace
+
+tracepoint:raw_syscalls:sys_enter { 
+    if(comm == str($1) || comm == str($2)){
+        @ncalls[comm]=count();
+    } 
+} 
+
+END
+{
+    print(@ncalls);
+    clear(@ncalls);
+}
+
